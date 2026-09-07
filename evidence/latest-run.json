@@ -2,7 +2,7 @@
   "actions": [
     {
       "details": {},
-      "duration_ms": 547.035,
+      "duration_ms": 546.499,
       "name": "durable_baseline_gate",
       "outcome": "passed",
       "result": {
@@ -15,17 +15,17 @@
           "probe": {
             "cross_owner_status": 404,
             "initial_state": "queued",
-            "job_id": "60080bd7-e59a-41c3-8a9f-167e429fa4a4"
+            "job_id": "14a04524-774a-4dd2-a458-d736e4e31ff9"
           }
         },
-        "pid": 44114,
+        "pid": 52105,
         "startup_http_status": 200
       },
-      "started_at": "2026-09-07T04:44:46.136611Z"
+      "started_at": "2026-09-07T04:57:40.910773Z"
     },
     {
       "details": {},
-      "duration_ms": 23.145,
+      "duration_ms": 72.876,
       "name": "durable_process_interruption",
       "outcome": "passed",
       "result": {
@@ -34,11 +34,11 @@
         "returncode": -9,
         "signal": "SIGKILL"
       },
-      "started_at": "2026-09-07T04:44:46.683734Z"
+      "started_at": "2026-09-07T04:57:41.457318Z"
     },
     {
       "details": {},
-      "duration_ms": 412.978,
+      "duration_ms": 458.328,
       "name": "durable_restart_recovery",
       "outcome": "passed",
       "result": {
@@ -51,15 +51,15 @@
           "probe": {
             "cross_owner_status": 404,
             "initial_state": "queued",
-            "job_id": "f03c0eef-f6dd-4978-acc7-2fa81c6300d4"
+            "job_id": "f7d6b762-5e8e-48ed-bea1-eb814100ad5c"
           }
         },
         "persisted_job": {
           "attempt": 1,
-          "completed_at": "2026-09-07T04:44:47.040Z",
-          "created_at": "2026-09-07T04:44:46.677Z",
+          "completed_at": "2026-09-07T04:57:41.887Z",
+          "created_at": "2026-09-07T04:57:41.450Z",
           "error": null,
-          "id": "60080bd7-e59a-41c3-8a9f-167e429fa4a4",
+          "id": "14a04524-774a-4dd2-a458-d736e4e31ff9",
           "kind": "data_import",
           "max_attempts": 3,
           "record_count": 2,
@@ -69,16 +69,16 @@
           },
           "revision": 3,
           "state": "succeeded",
-          "updated_at": "2026-09-07T04:44:47.040Z"
+          "updated_at": "2026-09-07T04:57:41.887Z"
         },
-        "pid": 44117,
-        "recovery_ms": 436.176
+        "pid": 52113,
+        "recovery_ms": 531.254
       },
-      "started_at": "2026-09-07T04:44:46.706919Z"
+      "started_at": "2026-09-07T04:57:41.530232Z"
     },
     {
       "details": {},
-      "duration_ms": 3310.309,
+      "duration_ms": 3033.148,
       "name": "model_known_release_gate",
       "outcome": "passed",
       "result": {
@@ -89,32 +89,33 @@
             "version": "wine-logreg-v2"
           },
           "probe": {
+            "class_name": "cultivar_1",
             "model_version": "wine-logreg-v2",
             "prediction": 0,
             "probability_sum": 1.0
           }
         },
-        "pid": 44118,
+        "pid": 52117,
         "registry_sha256": "557e8cda350690f8acc43ccd51b0d20dfb2eec5be8429778bedf6c8540114cc3"
       },
-      "started_at": "2026-09-07T04:44:48.077231Z"
+      "started_at": "2026-09-07T04:57:42.869981Z"
     },
     {
       "details": {},
-      "duration_ms": 2358.9,
+      "duration_ms": 3087.967,
       "name": "model_candidate_fail_closed",
       "outcome": "passed",
       "result": {
         "candidate_rejected": true,
-        "pid": 44199,
+        "pid": 52141,
         "reason": "health returned HTTP 503: {\"detail\":{\"status\":\"error\",\"service\":\"model-lifecycle-service\",\"version\":\"0.1.0\",\"reason\":\"active model is missing from registry versions\"}}",
         "startup_http_status": 503
       },
-      "started_at": "2026-09-07T04:44:52.230663Z"
+      "started_at": "2026-09-07T04:57:46.875982Z"
     },
     {
       "details": {},
-      "duration_ms": 2413.078,
+      "duration_ms": 3116.836,
       "name": "model_last_known_good_rollback",
       "outcome": "passed",
       "result": {
@@ -125,20 +126,21 @@
             "version": "wine-logreg-v2"
           },
           "probe": {
+            "class_name": "cultivar_1",
             "model_version": "wine-logreg-v2",
             "prediction": 0,
             "probability_sum": 1.0
           }
         },
-        "pid": 44200,
+        "pid": 52156,
         "registry_sha256": "557e8cda350690f8acc43ccd51b0d20dfb2eec5be8429778bedf6c8540114cc3",
-        "rollback_ms": 2413.113
+        "rollback_ms": 3116.941
       },
-      "started_at": "2026-09-07T04:44:54.775776Z"
+      "started_at": "2026-09-07T04:57:50.333396Z"
     }
   ],
   "command": "uv run reliability-lab run --mode actual --durable-port 8211 --model-port 8215 --load 12 --output evidence/latest-run.json",
-  "completed_at": "2026-09-07T04:44:57.452886Z",
+  "completed_at": "2026-09-07T04:57:54.060121Z",
   "dependencies": {
     "durable-workflows": {
       "dirty_tree": false,
@@ -148,7 +150,7 @@
     "model-lifecycle-service": {
       "dirty_tree": false,
       "path": "/Users/roshansilva/Documents/GitHub/career-portfolio/model-lifecycle-service",
-      "revision": "5c15b49af3d8034131202edca33d6cd18dc131be"
+      "revision": "18eb247f8f305bbf1164383800a1f0d68ec4d1a1"
     }
   },
   "dirty_tree": false,
@@ -165,14 +167,14 @@
       "data_check": "A pre-interruption queued job completed after restart.",
       "id": "durable-owned-process-interruption",
       "impact": "Health became unreachable; no unrelated process or persistent state was touched.",
-      "observed_recovery_ms": 436.176,
+      "observed_recovery_ms": 531.254,
       "recovery": "The same service revision restarted against the same isolated SQLite file.",
       "trigger": "SIGKILL sent to the lab-owned durable service process group."
     },
     {
       "id": "model-candidate-release-rejected",
       "impact": "Health or version contract failed; traffic gate remained closed.",
-      "observed_recovery_ms": 2413.113,
+      "observed_recovery_ms": 3116.941,
       "recovery": "Candidate stopped; actual last-known-good artifact registry restored and prediction verified.",
       "trigger": "Candidate service started with a registry pointing to a missing release artifact."
     }
@@ -192,23 +194,23 @@
   "load": [
     {
       "concurrency": 8,
-      "elapsed_seconds": 0.945983,
+      "elapsed_seconds": 0.87126,
       "failed": 0,
       "failure_examples": [],
       "requests": 12,
-      "requests_per_second": 12.685,
+      "requests_per_second": 13.773,
       "service": "durable-workflows",
-      "submission_latency_p95_ms": 573.311,
+      "submission_latency_p95_ms": 529.828,
       "succeeded": 12
     },
     {
       "concurrency": 8,
-      "elapsed_seconds": 0.665329,
+      "elapsed_seconds": 0.620358,
       "failed": 0,
       "failure_examples": [],
-      "latency_p95_ms": 593.891,
+      "latency_p95_ms": 494.835,
       "requests": 12,
-      "requests_per_second": 18.036,
+      "requests_per_second": 19.344,
       "service": "model-lifecycle-service",
       "succeeded": 12
     }
@@ -221,23 +223,23 @@
     "load": [
       {
         "concurrency": 8,
-        "elapsed_seconds": 0.945983,
+        "elapsed_seconds": 0.87126,
         "failed": 0,
         "failure_examples": [],
         "requests": 12,
-        "requests_per_second": 12.685,
+        "requests_per_second": 13.773,
         "service": "durable-workflows",
-        "submission_latency_p95_ms": 573.311,
+        "submission_latency_p95_ms": 529.828,
         "succeeded": 12
       },
       {
         "concurrency": 8,
-        "elapsed_seconds": 0.665329,
+        "elapsed_seconds": 0.620358,
         "failed": 0,
         "failure_examples": [],
-        "latency_p95_ms": 593.891,
+        "latency_p95_ms": 494.835,
         "requests": 12,
-        "requests_per_second": 18.036,
+        "requests_per_second": 19.344,
         "service": "model-lifecycle-service",
         "succeeded": 12
       }
@@ -251,12 +253,12 @@
     "meaning": "A real model service was started against the copied last-known-good registry and passed health plus prediction after the candidate process failed its gate.",
     "restored_registry_sha256": "557e8cda350690f8acc43ccd51b0d20dfb2eec5be8429778bedf6c8540114cc3",
     "restored_release": "wine-logreg-v2",
-    "rollback_ms": 2413.113
+    "rollback_ms": 3116.941
   },
-  "run_id": "73457dc6-3c53-42fc-8153-6158f6d29bec",
+  "run_id": "9511c486-0213-44a9-b82f-104f650c8c11",
   "schema_version": 1,
-  "source_revision": "0f801eca6ba240560fbdb5e419f587c90ff0b44f",
-  "started_at": "2026-09-07T04:44:46.103395Z",
+  "source_revision": "75a57cb5c0c2d1d4fe6345e2873ed4a42b1df129",
+  "started_at": "2026-09-07T04:57:40.878521Z",
   "status": "passed",
-  "timestamp": "2026-09-07T04:44:46.103708Z"
+  "timestamp": "2026-09-07T04:57:40.878829Z"
 }
