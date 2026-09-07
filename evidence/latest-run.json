@@ -1,0 +1,262 @@
+{
+  "actions": [
+    {
+      "details": {},
+      "duration_ms": 547.035,
+      "name": "durable_baseline_gate",
+      "outcome": "passed",
+      "result": {
+        "gate": {
+          "health": {
+            "service": "durable-workflows",
+            "status": "ok",
+            "version": "0.1.0"
+          },
+          "probe": {
+            "cross_owner_status": 404,
+            "initial_state": "queued",
+            "job_id": "60080bd7-e59a-41c3-8a9f-167e429fa4a4"
+          }
+        },
+        "pid": 44114,
+        "startup_http_status": 200
+      },
+      "started_at": "2026-09-07T04:44:46.136611Z"
+    },
+    {
+      "details": {},
+      "duration_ms": 23.145,
+      "name": "durable_process_interruption",
+      "outcome": "passed",
+      "result": {
+        "failure": "ConnectError",
+        "outage_observed": true,
+        "returncode": -9,
+        "signal": "SIGKILL"
+      },
+      "started_at": "2026-09-07T04:44:46.683734Z"
+    },
+    {
+      "details": {},
+      "duration_ms": 412.978,
+      "name": "durable_restart_recovery",
+      "outcome": "passed",
+      "result": {
+        "gate": {
+          "health": {
+            "service": "durable-workflows",
+            "status": "ok",
+            "version": "0.1.0"
+          },
+          "probe": {
+            "cross_owner_status": 404,
+            "initial_state": "queued",
+            "job_id": "f03c0eef-f6dd-4978-acc7-2fa81c6300d4"
+          }
+        },
+        "persisted_job": {
+          "attempt": 1,
+          "completed_at": "2026-09-07T04:44:47.040Z",
+          "created_at": "2026-09-07T04:44:46.677Z",
+          "error": null,
+          "id": "60080bd7-e59a-41c3-8a9f-167e429fa4a4",
+          "kind": "data_import",
+          "max_attempts": 3,
+          "record_count": 2,
+          "result": {
+            "accepted_count": 2,
+            "value_sum": 5
+          },
+          "revision": 3,
+          "state": "succeeded",
+          "updated_at": "2026-09-07T04:44:47.040Z"
+        },
+        "pid": 44117,
+        "recovery_ms": 436.176
+      },
+      "started_at": "2026-09-07T04:44:46.706919Z"
+    },
+    {
+      "details": {},
+      "duration_ms": 3310.309,
+      "name": "model_known_release_gate",
+      "outcome": "passed",
+      "result": {
+        "gate": {
+          "health": {
+            "service": "model-lifecycle-service",
+            "status": "ok",
+            "version": "wine-logreg-v2"
+          },
+          "probe": {
+            "model_version": "wine-logreg-v2",
+            "prediction": 0,
+            "probability_sum": 1.0
+          }
+        },
+        "pid": 44118,
+        "registry_sha256": "557e8cda350690f8acc43ccd51b0d20dfb2eec5be8429778bedf6c8540114cc3"
+      },
+      "started_at": "2026-09-07T04:44:48.077231Z"
+    },
+    {
+      "details": {},
+      "duration_ms": 2358.9,
+      "name": "model_candidate_fail_closed",
+      "outcome": "passed",
+      "result": {
+        "candidate_rejected": true,
+        "pid": 44199,
+        "reason": "health returned HTTP 503: {\"detail\":{\"status\":\"error\",\"service\":\"model-lifecycle-service\",\"version\":\"0.1.0\",\"reason\":\"active model is missing from registry versions\"}}",
+        "startup_http_status": 503
+      },
+      "started_at": "2026-09-07T04:44:52.230663Z"
+    },
+    {
+      "details": {},
+      "duration_ms": 2413.078,
+      "name": "model_last_known_good_rollback",
+      "outcome": "passed",
+      "result": {
+        "gate": {
+          "health": {
+            "service": "model-lifecycle-service",
+            "status": "ok",
+            "version": "wine-logreg-v2"
+          },
+          "probe": {
+            "model_version": "wine-logreg-v2",
+            "prediction": 0,
+            "probability_sum": 1.0
+          }
+        },
+        "pid": 44200,
+        "registry_sha256": "557e8cda350690f8acc43ccd51b0d20dfb2eec5be8429778bedf6c8540114cc3",
+        "rollback_ms": 2413.113
+      },
+      "started_at": "2026-09-07T04:44:54.775776Z"
+    }
+  ],
+  "command": "uv run reliability-lab run --mode actual --durable-port 8211 --model-port 8215 --load 12 --output evidence/latest-run.json",
+  "completed_at": "2026-09-07T04:44:57.452886Z",
+  "dependencies": {
+    "durable-workflows": {
+      "dirty_tree": false,
+      "path": "/Users/roshansilva/Documents/GitHub/career-portfolio/durable-workflows",
+      "revision": "424053b6a8efd7768f7d09555ef3a89304b74c21"
+    },
+    "model-lifecycle-service": {
+      "dirty_tree": false,
+      "path": "/Users/roshansilva/Documents/GitHub/career-portfolio/model-lifecycle-service",
+      "revision": "5c15b49af3d8034131202edca33d6cd18dc131be"
+    }
+  },
+  "dirty_tree": false,
+  "environment": {
+    "architecture": "arm64",
+    "hardware": "Apple M4",
+    "logical_cpu_count": 10,
+    "os": "macOS-27.0-arm64-arm-64bit",
+    "python": "3.12.10"
+  },
+  "exit_status": 0,
+  "incidents": [
+    {
+      "data_check": "A pre-interruption queued job completed after restart.",
+      "id": "durable-owned-process-interruption",
+      "impact": "Health became unreachable; no unrelated process or persistent state was touched.",
+      "observed_recovery_ms": 436.176,
+      "recovery": "The same service revision restarted against the same isolated SQLite file.",
+      "trigger": "SIGKILL sent to the lab-owned durable service process group."
+    },
+    {
+      "id": "model-candidate-release-rejected",
+      "impact": "Health or version contract failed; traffic gate remained closed.",
+      "observed_recovery_ms": 2413.113,
+      "recovery": "Candidate stopped; actual last-known-good artifact registry restored and prediction verified.",
+      "trigger": "Candidate service started with a registry pointing to a missing release artifact."
+    }
+  ],
+  "inputs": {
+    "durable_port": 8211,
+    "load_requests_per_service": 12,
+    "mode": "actual",
+    "model_port": 8215,
+    "seed": null,
+    "synthetic_inputs": true
+  },
+  "limitations": [
+    "All drills use owned local child processes and isolated temporary state.",
+    "Observed timing is host- and load-dependent and does not establish production SLOs."
+  ],
+  "load": [
+    {
+      "concurrency": 8,
+      "elapsed_seconds": 0.945983,
+      "failed": 0,
+      "failure_examples": [],
+      "requests": 12,
+      "requests_per_second": 12.685,
+      "service": "durable-workflows",
+      "submission_latency_p95_ms": 573.311,
+      "succeeded": 12
+    },
+    {
+      "concurrency": 8,
+      "elapsed_seconds": 0.665329,
+      "failed": 0,
+      "failure_examples": [],
+      "latency_p95_ms": 593.891,
+      "requests": 12,
+      "requests_per_second": 18.036,
+      "service": "model-lifecycle-service",
+      "succeeded": 12
+    }
+  ],
+  "measured_results": {
+    "actions_failed": 0,
+    "actions_passed": 6,
+    "candidate_rejected": true,
+    "incidents_exercised": 2,
+    "load": [
+      {
+        "concurrency": 8,
+        "elapsed_seconds": 0.945983,
+        "failed": 0,
+        "failure_examples": [],
+        "requests": 12,
+        "requests_per_second": 12.685,
+        "service": "durable-workflows",
+        "submission_latency_p95_ms": 573.311,
+        "succeeded": 12
+      },
+      {
+        "concurrency": 8,
+        "elapsed_seconds": 0.665329,
+        "failed": 0,
+        "failure_examples": [],
+        "latency_p95_ms": 593.891,
+        "requests": 12,
+        "requests_per_second": 18.036,
+        "service": "model-lifecycle-service",
+        "succeeded": 12
+      }
+    ],
+    "restored_release": "wine-logreg-v2"
+  },
+  "mode": "actual",
+  "release": {
+    "candidate": "broken-candidate-v2",
+    "candidate_rejected": true,
+    "meaning": "A real model service was started against the copied last-known-good registry and passed health plus prediction after the candidate process failed its gate.",
+    "restored_registry_sha256": "557e8cda350690f8acc43ccd51b0d20dfb2eec5be8429778bedf6c8540114cc3",
+    "restored_release": "wine-logreg-v2",
+    "rollback_ms": 2413.113
+  },
+  "run_id": "73457dc6-3c53-42fc-8153-6158f6d29bec",
+  "schema_version": 1,
+  "source_revision": "0f801eca6ba240560fbdb5e419f587c90ff0b44f",
+  "started_at": "2026-09-07T04:44:46.103395Z",
+  "status": "passed",
+  "timestamp": "2026-09-07T04:44:46.103708Z"
+}
