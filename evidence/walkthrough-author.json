@@ -2,7 +2,7 @@
   "actions": [
     {
       "details": {},
-      "duration_ms": 598.059,
+      "duration_ms": 546.499,
       "name": "durable_baseline_gate",
       "outcome": "passed",
       "result": {
@@ -15,17 +15,17 @@
           "probe": {
             "cross_owner_status": 404,
             "initial_state": "queued",
-            "job_id": "ea066596-af5a-411b-a0fd-910db5af1db1"
+            "job_id": "14a04524-774a-4dd2-a458-d736e4e31ff9"
           }
         },
-        "pid": 56508,
+        "pid": 52105,
         "startup_http_status": 200
       },
-      "started_at": "2026-09-07T05:06:19.926632Z"
+      "started_at": "2026-09-07T04:57:40.910773Z"
     },
     {
       "details": {},
-      "duration_ms": 132.769,
+      "duration_ms": 72.876,
       "name": "durable_process_interruption",
       "outcome": "passed",
       "result": {
@@ -34,11 +34,11 @@
         "returncode": -9,
         "signal": "SIGKILL"
       },
-      "started_at": "2026-09-07T05:06:20.524729Z"
+      "started_at": "2026-09-07T04:57:41.457318Z"
     },
     {
       "details": {},
-      "duration_ms": 602.787,
+      "duration_ms": 458.328,
       "name": "durable_restart_recovery",
       "outcome": "passed",
       "result": {
@@ -51,15 +51,15 @@
           "probe": {
             "cross_owner_status": 404,
             "initial_state": "queued",
-            "job_id": "f6e883b3-b3b5-4e80-b56b-9a9f9ceb8128"
+            "job_id": "f7d6b762-5e8e-48ed-bea1-eb814100ad5c"
           }
         },
         "persisted_job": {
           "attempt": 1,
-          "completed_at": "2026-09-07T05:06:21.176Z",
-          "created_at": "2026-09-07T05:06:20.517Z",
+          "completed_at": "2026-09-07T04:57:41.887Z",
+          "created_at": "2026-09-07T04:57:41.450Z",
           "error": null,
-          "id": "ea066596-af5a-411b-a0fd-910db5af1db1",
+          "id": "14a04524-774a-4dd2-a458-d736e4e31ff9",
           "kind": "data_import",
           "max_attempts": 3,
           "record_count": 2,
@@ -69,16 +69,16 @@
           },
           "revision": 3,
           "state": "succeeded",
-          "updated_at": "2026-09-07T05:06:21.176Z"
+          "updated_at": "2026-09-07T04:57:41.887Z"
         },
-        "pid": 56542,
-        "recovery_ms": 735.616
+        "pid": 52113,
+        "recovery_ms": 531.254
       },
-      "started_at": "2026-09-07T05:06:20.657536Z"
+      "started_at": "2026-09-07T04:57:41.530232Z"
     },
     {
       "details": {},
-      "duration_ms": 3220.5,
+      "duration_ms": 3033.148,
       "name": "model_known_release_gate",
       "outcome": "passed",
       "result": {
@@ -95,27 +95,27 @@
             "probability_sum": 1.0
           }
         },
-        "pid": 56545,
+        "pid": 52117,
         "registry_sha256": "557e8cda350690f8acc43ccd51b0d20dfb2eec5be8429778bedf6c8540114cc3"
       },
-      "started_at": "2026-09-07T05:06:25.057121Z"
+      "started_at": "2026-09-07T04:57:42.869981Z"
     },
     {
       "details": {},
-      "duration_ms": 2465.176,
+      "duration_ms": 3087.967,
       "name": "model_candidate_fail_closed",
       "outcome": "passed",
       "result": {
         "candidate_rejected": true,
-        "pid": 56575,
+        "pid": 52141,
         "reason": "health returned HTTP 503: {\"detail\":{\"status\":\"error\",\"service\":\"model-lifecycle-service\",\"version\":\"0.1.0\",\"reason\":\"active model is missing from registry versions\"}}",
         "startup_http_status": 503
       },
-      "started_at": "2026-09-07T05:06:31.170341Z"
+      "started_at": "2026-09-07T04:57:46.875982Z"
     },
     {
       "details": {},
-      "duration_ms": 2468.803,
+      "duration_ms": 3116.836,
       "name": "model_last_known_good_rollback",
       "outcome": "passed",
       "result": {
@@ -132,15 +132,15 @@
             "probability_sum": 1.0
           }
         },
-        "pid": 56600,
+        "pid": 52156,
         "registry_sha256": "557e8cda350690f8acc43ccd51b0d20dfb2eec5be8429778bedf6c8540114cc3",
-        "rollback_ms": 2468.897
+        "rollback_ms": 3116.941
       },
-      "started_at": "2026-09-07T05:06:33.954873Z"
+      "started_at": "2026-09-07T04:57:50.333396Z"
     }
   ],
-  "command": "uv run reliability-lab run --mode actual --durable-port 8511 --model-port 8515 --load 40 --output evidence/benchmark-root-final.json",
-  "completed_at": "2026-09-07T05:06:37.096173Z",
+  "command": "uv run reliability-lab run --mode actual --durable-port 8211 --model-port 8215 --load 12 --output evidence/latest-run.json",
+  "completed_at": "2026-09-07T04:57:54.060121Z",
   "dependencies": {
     "durable-workflows": {
       "dirty_tree": false,
@@ -150,7 +150,7 @@
     "model-lifecycle-service": {
       "dirty_tree": false,
       "path": "/Users/roshansilva/Documents/GitHub/career-portfolio/model-lifecycle-service",
-      "revision": "3bc7695ec5e5de472cae4cb9221dd7cd2b269880"
+      "revision": "18eb247f8f305bbf1164383800a1f0d68ec4d1a1"
     }
   },
   "dirty_tree": false,
@@ -167,23 +167,23 @@
       "data_check": "A pre-interruption queued job completed after restart.",
       "id": "durable-owned-process-interruption",
       "impact": "Health became unreachable; no unrelated process or persistent state was touched.",
-      "observed_recovery_ms": 735.616,
+      "observed_recovery_ms": 531.254,
       "recovery": "The same service revision restarted against the same isolated SQLite file.",
       "trigger": "SIGKILL sent to the lab-owned durable service process group."
     },
     {
       "id": "model-candidate-release-rejected",
       "impact": "Health or version contract failed; traffic gate remained closed.",
-      "observed_recovery_ms": 2468.897,
+      "observed_recovery_ms": 3116.941,
       "recovery": "Candidate stopped; actual last-known-good artifact registry restored and prediction verified.",
       "trigger": "Candidate service started with a registry pointing to a missing release artifact."
     }
   ],
   "inputs": {
-    "durable_port": 8511,
-    "load_requests_per_service": 40,
+    "durable_port": 8211,
+    "load_requests_per_service": 12,
     "mode": "actual",
-    "model_port": 8515,
+    "model_port": 8215,
     "seed": null,
     "synthetic_inputs": true
   },
@@ -194,25 +194,25 @@
   "load": [
     {
       "concurrency": 8,
-      "elapsed_seconds": 3.782537,
+      "elapsed_seconds": 0.87126,
       "failed": 0,
       "failure_examples": [],
-      "requests": 40,
-      "requests_per_second": 10.575,
+      "requests": 12,
+      "requests_per_second": 13.773,
       "service": "durable-workflows",
-      "submission_latency_p95_ms": 657.938,
-      "succeeded": 40
+      "submission_latency_p95_ms": 529.828,
+      "succeeded": 12
     },
     {
       "concurrency": 8,
-      "elapsed_seconds": 2.504139,
+      "elapsed_seconds": 0.620358,
       "failed": 0,
       "failure_examples": [],
-      "latency_p95_ms": 559.879,
-      "requests": 40,
-      "requests_per_second": 15.974,
+      "latency_p95_ms": 494.835,
+      "requests": 12,
+      "requests_per_second": 19.344,
       "service": "model-lifecycle-service",
-      "succeeded": 40
+      "succeeded": 12
     }
   ],
   "measured_results": {
@@ -223,25 +223,25 @@
     "load": [
       {
         "concurrency": 8,
-        "elapsed_seconds": 3.782537,
+        "elapsed_seconds": 0.87126,
         "failed": 0,
         "failure_examples": [],
-        "requests": 40,
-        "requests_per_second": 10.575,
+        "requests": 12,
+        "requests_per_second": 13.773,
         "service": "durable-workflows",
-        "submission_latency_p95_ms": 657.938,
-        "succeeded": 40
+        "submission_latency_p95_ms": 529.828,
+        "succeeded": 12
       },
       {
         "concurrency": 8,
-        "elapsed_seconds": 2.504139,
+        "elapsed_seconds": 0.620358,
         "failed": 0,
         "failure_examples": [],
-        "latency_p95_ms": 559.879,
-        "requests": 40,
-        "requests_per_second": 15.974,
+        "latency_p95_ms": 494.835,
+        "requests": 12,
+        "requests_per_second": 19.344,
         "service": "model-lifecycle-service",
-        "succeeded": 40
+        "succeeded": 12
       }
     ],
     "restored_release": "wine-logreg-v2"
@@ -253,12 +253,12 @@
     "meaning": "A real model service was started against the copied last-known-good registry and passed health plus prediction after the candidate process failed its gate.",
     "restored_registry_sha256": "557e8cda350690f8acc43ccd51b0d20dfb2eec5be8429778bedf6c8540114cc3",
     "restored_release": "wine-logreg-v2",
-    "rollback_ms": 2468.897
+    "rollback_ms": 3116.941
   },
-  "run_id": "a01e1cb7-8f49-40a1-85fe-5b852be48a3d",
+  "run_id": "9511c486-0213-44a9-b82f-104f650c8c11",
   "schema_version": 1,
-  "source_revision": "3c089c68ff1f09e98310117257fa61cd801922ab",
-  "started_at": "2026-09-07T05:06:19.889323Z",
+  "source_revision": "75a57cb5c0c2d1d4fe6345e2873ed4a42b1df129",
+  "started_at": "2026-09-07T04:57:40.878521Z",
   "status": "passed",
-  "timestamp": "2026-09-07T05:06:19.889563Z"
+  "timestamp": "2026-09-07T04:57:40.878829Z"
 }
