@@ -19,6 +19,7 @@ from reliability_lab.adapters import (
     ProbeFailure,
     durable_adapter,
     model_adapter,
+    validate_model_prediction,
     wait_until_responding,
 )
 from reliability_lab.config import RunConfig
@@ -110,6 +111,9 @@ class ReliabilityRun:
                     assert_port_free("127.0.0.1", self.config.model_port)
                     self._durable_drill(workspace)
                     self._model_release_drill(workspace)
+                except BaseException:
+                    self.recorder.report["process_log_tails"] = self.processes.diagnostics()
+                    raise
                 finally:
                     self.processes.stop_all()
             self.recorder.finish("passed", limitations)
@@ -434,11 +438,9 @@ class ReliabilityRun:
                 timeout=self.config.request_timeout_seconds, trust_env=False
             ) as client:
                 response = client.post(f"{base_url}/predict", json=MODEL_INPUT)
-                if (
-                    response.status_code != 200
-                    or response.json().get("model_version") != expected_release
-                ):
+                if response.status_code != 200:
                     raise ProbeFailure(f"prediction contract failed: HTTP {response.status_code}")
+                validate_model_prediction(response.json(), expected_release)
             return (time.perf_counter() - began) * 1000
 
         with ThreadPoolExecutor(max_workers=min(8, count)) as pool:

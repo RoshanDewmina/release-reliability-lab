@@ -17,7 +17,7 @@ class RunConfig:
     model_port: int = 8215
     load_requests: int = 12
     request_timeout_seconds: float = 2.0
-    startup_timeout_seconds: float = 12.0
+    startup_timeout_seconds: float = 30.0
 
     def validate(self) -> None:
         if self.mode not in {"actual", "fixtures"}:

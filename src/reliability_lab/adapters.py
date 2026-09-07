@@ -6,6 +6,7 @@ import uuid
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
+from math import isfinite
 from typing import Any
 
 import httpx
@@ -30,6 +31,38 @@ MODEL_INPUT = {
     "od280_od315_of_diluted_wines": 3.0,
     "proline": 900.0,
 }
+MODEL_CLASSES = {0: "cultivar_1", 1: "cultivar_2", 2: "cultivar_3"}
+
+
+def validate_model_prediction(body: object, expected_version: str) -> dict[str, Any]:
+    expected_fields = {"prediction", "class_name", "probabilities", "model_version"}
+    if not isinstance(body, dict) or set(body) != expected_fields:
+        raise ProbeFailure(f"model predict fields mismatch: expected {sorted(expected_fields)}")
+    prediction = body["prediction"]
+    if type(prediction) is not int or prediction not in MODEL_CLASSES:
+        raise ProbeFailure(f"model prediction is invalid: {prediction!r}")
+    if body["class_name"] != MODEL_CLASSES[prediction]:
+        raise ProbeFailure("model class name does not match prediction")
+    if body["model_version"] != expected_version:
+        raise ProbeFailure(f"predict model version mismatch: {body['model_version']}")
+    probabilities = body["probabilities"]
+    if not isinstance(probabilities, dict) or set(probabilities) != set(MODEL_CLASSES.values()):
+        raise ProbeFailure("model probability classes do not match the supported classes")
+    values = list(probabilities.values())
+    if any(
+        type(value) not in {int, float} or not isfinite(value) or value < 0 or value > 1
+        for value in values
+    ):
+        raise ProbeFailure("model probabilities must be finite numbers in [0, 1]")
+    probability_sum = float(sum(values))
+    if abs(probability_sum - 1.0) > 1e-6:
+        raise ProbeFailure(f"model probabilities did not sum to one: {probability_sum}")
+    return {
+        "model_version": expected_version,
+        "prediction": prediction,
+        "class_name": body["class_name"],
+        "probability_sum": probability_sum,
+    }
 
 
 @dataclass(frozen=True, slots=True)
@@ -124,21 +157,7 @@ def model_adapter(port: int, expected_version: str = "wine-logreg-v1") -> Servic
             raise ProbeFailure(
                 f"model predict returned HTTP {response.status_code}: {response.text[:200]}"
             )
-        body = response.json()
-        if body.get("model_version") != expected_version:
-            raise ProbeFailure(f"predict model version mismatch: {body.get('model_version')}")
-        if not isinstance(body.get("prediction"), int) or not isinstance(
-            body.get("probabilities"), dict
-        ):
-            raise ProbeFailure(f"model predict schema mismatch: {body}")
-        probability_sum = sum(body["probabilities"].values())
-        if abs(probability_sum - 1.0) > 1e-6:
-            raise ProbeFailure(f"model probabilities did not sum to one: {probability_sum}")
-        return {
-            "model_version": body["model_version"],
-            "prediction": body["prediction"],
-            "probability_sum": probability_sum,
-        }
+        return validate_model_prediction(response.json(), expected_version)
 
     return ServiceAdapter(
         name="model",

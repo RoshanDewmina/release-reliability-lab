@@ -69,6 +69,8 @@ Rollback here means the known actual model release artifact is restored and veri
 
 Process ownership is fail-closed: the registry signals only child process names it started, uses separate process groups, and rejects unknown names. Cleanup runs in `finally` before temporary state is deleted. No `pkill`, wildcard kill, external container, cloud resource, or shared database is used.
 
+Startup waits are capped at 30 seconds per service response to tolerate local model import time while remaining bounded. Failed runs retain at most the last 4 KiB of each live child log inside the JSON report before temporary logs are removed. Successful reports omit process log contents.
+
 ## Commands and evidence
 
 ```bash
