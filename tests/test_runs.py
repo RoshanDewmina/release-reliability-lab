@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import subprocess
 from pathlib import Path
 
@@ -59,7 +60,12 @@ def test_actual_candidate_is_rejected_and_known_model_release_is_restored(free_p
     ).execute()
     assert report["status"] == "passed", report.get("fatal_error")
     assert report["release"]["candidate_rejected"] is True
-    assert report["release"]["restored_release"] == "wine-logreg-v1"
+    registry = json.loads(
+        (
+            DEFAULT_MODEL_REPO / "src" / "model_lifecycle" / "bundled_registry" / "registry.json"
+        ).read_text()
+    )
+    assert report["release"]["restored_release"] == registry["active_version"]
     assert report["release"]["restored_registry_sha256"]
     assert report["dependencies"]["durable-workflows"]["revision"]
     assert report["dependencies"]["model-lifecycle-service"]["revision"]

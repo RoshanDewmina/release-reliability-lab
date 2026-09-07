@@ -41,6 +41,20 @@ def _registry_hash(registry: Path) -> str:
     return digest.hexdigest()
 
 
+def _trusted_active_release(registry: Path) -> str:
+    payload = json.loads((registry / "registry.json").read_text())
+    active = payload.get("active_version")
+    versions = payload.get("versions")
+    if not isinstance(active, str) or not active or not isinstance(versions, dict):
+        raise ProbeFailure("trusted registry has no valid active release")
+    if active not in versions or not isinstance(versions[active], dict):
+        raise ProbeFailure("trusted active release is absent from registry versions")
+    metadata = json.loads((registry / "versions" / active / "metadata.json").read_text())
+    if metadata.get("version") != active:
+        raise ProbeFailure("trusted registry and metadata release identities disagree")
+    return active
+
+
 class ReliabilityRun:
     def __init__(self, config: RunConfig):
         config.validate()
@@ -316,21 +330,23 @@ class ReliabilityRun:
         }
 
     def _model_release_drill(self, workspace: Path) -> None:
-        adapter = model_adapter(self.config.model_port)
         known_registry = None
         candidate_registry = None
         known_hash = "fixture"
+        expected_release = "wine-logreg-v1"
         if self.config.mode == "actual":
             source = self.config.model_repo / "src" / "model_lifecycle" / "bundled_registry"
             known_registry = workspace / "model" / "known-good"
             candidate_registry = workspace / "model" / "candidate"
             shutil.copytree(source, known_registry)
             shutil.copytree(source, candidate_registry)
+            expected_release = _trusted_active_release(known_registry)
             registry_file = candidate_registry / "registry.json"
             registry = json.loads(registry_file.read_text())
             registry["active_version"] = "broken-candidate-v2"
             registry_file.write_text(json.dumps(registry, indent=2) + "\n")
             known_hash = _registry_hash(known_registry)
+        adapter = model_adapter(self.config.model_port, expected_version=expected_release)
 
         with self.recorder.action("model_known_release_gate") as result:
             result["pid"] = self._start_model("model-known", workspace, known_registry)
@@ -338,7 +354,7 @@ class ReliabilityRun:
             result["gate"] = adapter.gate(self.config.request_timeout_seconds)
             result["registry_sha256"] = known_hash
 
-        load = self._model_load()
+        load = self._model_load(expected_release)
         self.recorder.report["load"].append(load)
         if load["failed"]:
             raise ProbeFailure(f"model load probe had {load['failed']} failures")
@@ -375,7 +391,7 @@ class ReliabilityRun:
         self.recorder.report["release"] = {
             "candidate": "broken-candidate-v2" if self.config.mode == "actual" else "wrong-version",
             "candidate_rejected": True,
-            "restored_release": "wine-logreg-v1",
+            "restored_release": expected_release,
             "restored_registry_sha256": known_hash,
             "rollback_ms": result["rollback_ms"],
             "meaning": (
@@ -405,7 +421,7 @@ class ReliabilityRun:
             }
         )
 
-    def _model_load(self) -> dict[str, Any]:
+    def _model_load(self, expected_release: str) -> dict[str, Any]:
         base_url = f"http://127.0.0.1:{self.config.model_port}"
         count = self.config.load_requests
         started = time.perf_counter()
@@ -420,7 +436,7 @@ class ReliabilityRun:
                 response = client.post(f"{base_url}/predict", json=MODEL_INPUT)
                 if (
                     response.status_code != 200
-                    or response.json().get("model_version") != "wine-logreg-v1"
+                    or response.json().get("model_version") != expected_release
                 ):
                     raise ProbeFailure(f"prediction contract failed: HTTP {response.status_code}")
             return (time.perf_counter() - began) * 1000

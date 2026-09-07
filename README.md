@@ -63,7 +63,7 @@ Each dependency repository must already have its own `.venv` from `uv sync --fro
 
 The durable gate requires the exact health identity and version, creates a strictly shaped import with the synthetic Alpha bearer credential, reads it back, and confirms the Beta credential receives 404. The interruption drill initially disables workers, creates a persisted queued job, sends `SIGKILL` only to the lab-owned child process group, observes an unreachable health endpoint, and restarts the same revision with workers against the same isolated database. The queued job must then succeed.
 
-The model gate requires the expected health identity and `wine-logreg-v1`, sends all 13 bounded numeric features through `/predict`, verifies the returned model version and probability sum, and applies concurrent prediction load. The candidate is the actual model service pointed at a copied registry whose active release refers to a missing artifact. Non-200 health closes the gate. Rollback stops that candidate, launches the actual model service against the unchanged copied last-known-good registry, and re-runs health plus prediction. The report records the registry content hash before and after.
+The model gate derives its expected release from the copied trusted bundled registry before any process starts. It verifies that the active version exists and agrees with its metadata, freezes the registry content hash, then requires that exact health and prediction version. The gate sends all 13 bounded numeric features through `/predict`, verifies the probability sum, and applies concurrent prediction load. The candidate is the actual model service pointed at a separate copied registry whose active release refers to a missing artifact. Non-200 health closes the gate. Rollback stops that candidate, launches the actual model service against the unchanged copied last-known-good registry, and re-runs health plus prediction. Runtime health never chooses the expected release.
 
 Rollback here means the known actual model release artifact is restored and verified after a candidate release fails. It is more than restarting the same broken configuration. It does not represent traffic switching on a production load balancer or database rollback.
 
@@ -96,4 +96,3 @@ The tests cover wrong-version and unhealthy fail-closed gates, refusal to signal
 ## License and data
 
 This repository and its synthetic fixtures are MIT licensed. It imports no private data. Actual runs use the sibling projects' original synthetic/import values and bundled Wine teaching-dataset model under the licenses documented by those repositories.
-
