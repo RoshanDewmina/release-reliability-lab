@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "source_revision": "085a22af35a9c70882117925f43bab3f2ac41164",
+  "timestamp_utc": "2026-09-07T05:21:11.788348+00:00",
+  "repository_url": "https://github.com/RoshanDewmina/release-reliability-lab",
+  "demo_url": "https://roshandewmina.github.io/release-reliability-lab/",
+  "deployment_type": "static_evidence_only",
+  "public_backend_deployed": false,
+  "provider": "GitHub Pages",
+  "build_status": "built",
+  "verified": [
+    "Public page loaded in fresh Chromium session; screenshot visually inspected",
+    "Static evidence label, actual-service recovery and rollback measurements visible",
+    "Clicked benchmark-root-final.json and loaded the public original JSON receipt"
+  ],
+  "external_cost_usd": 0,
+  "live_backend_blocker": "Public fault-control endpoints are intentionally excluded. No compatible authenticated owned persistent process host is provisioned; actual failure drills are isolated local CLI operations. Public deployment is a static report."
+}
