@@ -1,0 +1,20 @@
+{
+  "source_revision": "d60de3a",
+  "command": "docker build -t career-release-report:review .; docker run --rm -p127.0.0.1:8316:8116 career-release-report:review; GET health/report; POSTrun404",
+  "exit_status": 0,
+  "environment": "macOS-27.0-arm64-arm-64bit",
+  "container": "LinuxARM64 Python3.12.14",
+  "health": {
+    "status": "ok",
+    "service": "release-reliability-lab",
+    "version": "0.1.0"
+  },
+  "report_run_id": "a01e1cb7-8f49-40a1-85fe-5b852be48a3d",
+  "report_source_revision": "3c089c68ff1f09e98310117257fa61cd801922ab",
+  "report_status": "passed",
+  "no_fault_http_control": true,
+  "limits": [
+    "Image serves includedactualhostrun evidence only",
+    "No siblingserviceorchestration proven insidecontainer"
+  ]
+}

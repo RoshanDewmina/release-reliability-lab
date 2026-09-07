@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "release-reliability-lab",
-  "source_revision": "8e2a38dcbad46e196f39402fd2ee749702fc2b7f",
+  "source_revision": "3c089c68ff1f09e98310117257fa61cd801922ab",
   "claims": [
     {
       "id": "release-fail-closed-rollback-v1",
@@ -16,13 +16,14 @@
         "src/reliability_lab/adapters.py:model_adapter",
         "tests/test_runs.py:test_actual_candidate_is_rejected_and_known_model_release_is_restored"
       ],
-      "source_revision": "8e2a38dcbad46e196f39402fd2ee749702fc2b7f",
+      "source_revision": "3c089c68ff1f09e98310117257fa61cd801922ab",
       "receipt_refs": [
-        "evidence/benchmark.json"
+        "evidence/benchmark-root-final.json",
+        "evidence/root-arbitration.json"
       ],
-      "conditions": "Actual model-lifecycle-service revision 18eb247f8f305bbf1164383800a1f0d68ec4d1a1, copied isolated registries, Apple M4, Python 3.12.10.",
+      "conditions": "Actual model-lifecycle-service revision 3bc7695ec5e5de472cae4cb9221dd7cd2b269880, copied isolated registries, Apple M4, Python 3.12.10.",
       "limitations": "Local process and artifact rollback only; no production traffic, application-code rollback, or database migration rollback.",
-      "draft_resume_wording": "Built a fail-closed release gate that rejected an actual service candidate with a missing model release and restored the hashed wine-logreg-v2 artifact in 2.637 seconds under recorded local conditions.",
+      "draft_resume_wording": "Built a fail-closed release gate that rejected an actual service candidate with a missing model release and restored the hashed wine-logreg-v2 artifact in 2.469 seconds under recorded local conditions.",
       "wording_status": "user_review_pending",
       "mastery_status": "pending"
     },
@@ -39,13 +40,14 @@
         "src/reliability_lab/orchestrator.py:ReliabilityRun._durable_drill",
         "tests/test_processes.py"
       ],
-      "source_revision": "8e2a38dcbad46e196f39402fd2ee749702fc2b7f",
+      "source_revision": "3c089c68ff1f09e98310117257fa61cd801922ab",
       "receipt_refs": [
-        "evidence/benchmark.json"
+        "evidence/benchmark-root-final.json",
+        "evidence/root-arbitration.json"
       ],
       "conditions": "Actual durable-workflows revision 424053b6a8efd7768f7d09555ef3a89304b74c21, isolated temporary SQLite state, lab-owned process group, Apple M4.",
       "limitations": "Single-host process interruption; does not simulate disk loss, network partitions, or multi-node failover.",
-      "draft_resume_wording": "Implemented ownership-scoped failure injection and measured 487 ms local recovery while a queued durable request survived process termination and completed after restart.",
+      "draft_resume_wording": "Implemented ownership-scoped failure injection and measured 736 ms local recovery while a queued durable request survived process termination and completed after restart.",
       "wording_status": "user_review_pending",
       "mastery_status": "pending"
     },
@@ -62,9 +64,10 @@
         "src/reliability_lab/orchestrator.py:ReliabilityRun._durable_load",
         "src/reliability_lab/orchestrator.py:ReliabilityRun._model_load"
       ],
-      "source_revision": "8e2a38dcbad46e196f39402fd2ee749702fc2b7f",
+      "source_revision": "3c089c68ff1f09e98310117257fa61cd801922ab",
       "receipt_refs": [
-        "evidence/benchmark.json"
+        "evidence/benchmark-root-final.json",
+        "evidence/root-arbitration.json"
       ],
       "conditions": "Forty synthetic requests per actual service, eight client threads, localhost, Apple M4, Python 3.12.10.",
       "limitations": "Small local observation affected by process startup, client creation, host load, and service implementation; not a capacity or SLO claim.",
