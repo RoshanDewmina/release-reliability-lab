@@ -94,6 +94,8 @@ class ProcessRegistry:
         if managed is None:
             raise UnownedProcess(f"refusing to signal unowned process: {name}")
         try:
+            # Reap our leader before inspecting its process group.
+            managed.process.poll()
             if self._owned_group_exists(managed):
                 os.killpg(
                     managed.process_group,
@@ -114,10 +116,19 @@ class ProcessRegistry:
                 if self._owned_group_exists(managed):
                     os.killpg(managed.process_group, signal.SIGKILL)
                 managed.process.wait(timeout=timeout)
-            return managed.process.returncode
-        finally:
-            managed.log_file.close()
-            self._owned.pop(name, None)
+            deadline = time.monotonic() + timeout
+            while self._group_members(managed.process_group):
+                if time.monotonic() >= deadline:
+                    raise RuntimeError("owned descendants did not exit before cleanup deadline")
+                time.sleep(0.03)
+            # Retain ownership and diagnostics when cleanup fails, so it can be retried.
+            result = managed.process.returncode
+        except BaseException:
+            managed.log_file.flush()
+            raise
+        managed.log_file.close()
+        self._owned.pop(name, None)
+        return result
 
     def stop_all(self) -> None:
         failures = []
@@ -147,15 +158,22 @@ class ProcessRegistry:
     @staticmethod
     def _group_members(process_group: int) -> list[int]:
         output = subprocess.run(
-            ["ps", "-axo", "pid=,pgid="],
+            ["ps", "-axo", "pid=,pgid=,stat="],
             capture_output=True,
             check=True,
             text=True,
+            timeout=2,
         ).stdout
         members = []
         for line in output.splitlines():
             fields = line.split()
-            if len(fields) == 2 and int(fields[1]) == process_group:
+            # Zombies cannot receive signals; inspect every living group member.
+            # Their environment is unavailable; living group members still require a token.
+            if (
+                len(fields) == 3
+                and int(fields[1]) == process_group
+                and not fields[2].startswith("Z")
+            ):
                 members.append(int(fields[0]))
         return members
 
@@ -170,8 +188,11 @@ class ProcessRegistry:
                 capture_output=True,
                 check=False,
                 text=True,
+                timeout=2,
             ).stdout
-            if managed.ownership_token not in command:
+            if not command and pid not in cls._group_members(managed.process_group):
+                continue  # Exited during inspection; it no longer needs a signal.
+            if f"RELIABILITY_LAB_PROCESS_TOKEN={managed.ownership_token}" not in command:
                 raise UnownedProcess(
                     f"refusing to signal reused or mixed process group {managed.process_group}"
                 )

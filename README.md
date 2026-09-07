@@ -98,3 +98,21 @@ The tests cover wrong-version and unhealthy fail-closed gates, refusal to signal
 ## License and data
 
 This repository and its synthetic fixtures are MIT licensed. It imports no private data. Actual runs use the sibling projects' original synthetic/import values and bundled Wine teaching-dataset model under the licenses documented by those repositories.
+
+## Read-only report container
+
+```bash
+docker build -t release-reliability-report .
+docker run --rm -p 127.0.0.1:8116:8116 release-reliability-report
+```
+
+The image serves the included real local-run report. It does not launch sibling
+services or expose fault injection over HTTP. Run actual drills from the host
+CLI with the documented sibling checkouts and environments.
+
+Cleanup polls and reaps its own exited leader before checking living process-group
+members. Zombies do not retain environment tokens and cannot receive signals;
+every living member still requires the inherited ownership token. Failed
+ownership checks retain the registration and diagnostics for an explicit retry.
+Natural, unreaped leader exit and an unrelated-process sentinel are covered by
+tests; no wildcard process termination is used.
