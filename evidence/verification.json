@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "source_revision": "64a418ca0e2d2559a4fcd877125dd02af776b8b1",
+  "source_revision": "4ef425dea3feb90b2f98f29592d30ae3d2b58a37",
   "dirty_tree": false,
   "command": "uv sync --frozen && uv run ruff format --check . && uv run ruff check . && uv run pytest -q && uv build && git diff --check",
-  "timestamp": "2026-09-07T04:47:13Z",
+  "timestamp": "2026-09-07T04:59:35Z",
   "exit_status": 0,
   "environment": {
     "os": "macOS 27.0 (26A5425a)",
@@ -14,7 +14,7 @@
   "inputs": {
     "actual_dependency_revisions": {
       "durable-workflows": "424053b6a8efd7768f7d09555ef3a89304b74c21",
-      "model-lifecycle-service": "5c15b49af3d8034131202edca33d6cd18dc131be"
+      "model-lifecycle-service": "18eb247f8f305bbf1164383800a1f0d68ec4d1a1"
     },
     "synthetic": true,
     "seed": null
@@ -23,7 +23,7 @@
     "dependency_sync": "23 packages checked",
     "format": "17 files already formatted",
     "lint": "all checks passed",
-    "tests": "9 passed",
+    "tests": "18 passed",
     "actual_integration_test": "passed",
     "package_build": "source distribution and wheel built",
     "report_http_flow": {
@@ -32,7 +32,8 @@
       "html_status": 200,
       "report_mode": "actual",
       "report_actions": 6,
-      "restored_release": "wine-logreg-v2"
+      "restored_release": "wine-logreg-v2",
+      "walkthrough_source_revision": "75a57cb5c0c2d1d4fe6345e2873ed4a42b1df129"
     }
   },
   "limitations": [
