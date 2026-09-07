@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import shlex
+import sys
 from pathlib import Path
 
 import uvicorn
@@ -45,6 +47,7 @@ def main() -> None:
         load_requests=args.load,
     )
     report = ReliabilityRun(config).execute()
+    report["command"] = "uv run reliability-lab " + shlex.join(sys.argv[1:])
     write_report(args.output, report)
     print(
         json.dumps(

@@ -47,14 +47,26 @@ def git_state(repository: Path) -> dict[str, Any]:
 
 
 class RunRecorder:
-    def __init__(self, mode: str, dependencies: dict[str, Any]):
+    def __init__(
+        self,
+        mode: str,
+        dependencies: dict[str, Any],
+        source: dict[str, Any],
+        inputs: dict[str, Any],
+    ):
         self.report: dict[str, Any] = {
             "schema_version": 1,
             "run_id": str(uuid.uuid4()),
             "mode": mode,
             "started_at": utc_now(),
+            "timestamp": utc_now(),
             "completed_at": None,
             "status": "running",
+            "exit_status": None,
+            "source_revision": source["revision"],
+            "dirty_tree": source["dirty_tree"],
+            "command": None,
+            "inputs": inputs,
             "environment": {
                 "os": platform.platform(),
                 "architecture": platform.machine(),
@@ -104,8 +116,21 @@ class RunRecorder:
 
     def finish(self, status: str, limitations: list[str]) -> None:
         self.report["status"] = status
+        self.report["exit_status"] = 0 if status == "passed" else 1
         self.report["completed_at"] = utc_now()
         self.report["limitations"] = limitations
+        self.report["measured_results"] = {
+            "actions_passed": sum(
+                action["outcome"] == "passed" for action in self.report["actions"]
+            ),
+            "actions_failed": sum(
+                action["outcome"] == "failed" for action in self.report["actions"]
+            ),
+            "incidents_exercised": len(self.report["incidents"]),
+            "candidate_rejected": self.report["release"].get("candidate_rejected"),
+            "restored_release": self.report["release"].get("restored_release"),
+            "load": self.report["load"],
+        }
 
 
 def write_report(path: Path, report: dict[str, Any]) -> None:

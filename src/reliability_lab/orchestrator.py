@@ -53,7 +53,20 @@ class ReliabilityRun:
             }
         else:
             dependencies = {"fixtures": {"kind": "built-in", "synthetic": True}}
-        self.recorder = RunRecorder(config.mode, dependencies)
+        source = git_state(Path(__file__).resolve().parents[2])
+        self.recorder = RunRecorder(
+            config.mode,
+            dependencies,
+            source,
+            {
+                "mode": config.mode,
+                "durable_port": config.durable_port,
+                "model_port": config.model_port,
+                "load_requests_per_service": config.load_requests,
+                "synthetic_inputs": True,
+                "seed": None,
+            },
+        )
         self.processes = ProcessRegistry()
 
     def execute(self) -> dict[str, Any]:
@@ -66,6 +79,16 @@ class ReliabilityRun:
                 "Fixture mode is synthetic and is not integration evidence for portfolio services."
             )
         try:
+            if self.config.mode == "actual":
+                dirty = [
+                    name
+                    for name, state in self.recorder.report["dependencies"].items()
+                    if state.get("dirty_tree")
+                ]
+                if self.recorder.report["dirty_tree"]:
+                    dirty.append("release-reliability-lab")
+                if dirty:
+                    raise RuntimeError(f"actual evidence requires clean working trees: {dirty}")
             with tempfile.TemporaryDirectory(prefix="release-reliability-lab-") as temp:
                 workspace = Path(temp)
                 try:
