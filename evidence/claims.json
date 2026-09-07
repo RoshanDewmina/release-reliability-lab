@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "project": "release-reliability-lab",
+  "source_revision": "924a3f9123f75fabff36c3f05126bdc91b5e7482",
+  "claims": [
+    {
+      "id": "release-fail-closed-rollback-v1",
+      "capability_tags": [
+        "release-engineering",
+        "rollback",
+        "contract-testing",
+        "mlops"
+      ],
+      "implementation_refs": [
+        "src/reliability_lab/orchestrator.py:ReliabilityRun._model_release_drill",
+        "src/reliability_lab/adapters.py:model_adapter",
+        "tests/test_runs.py:test_actual_candidate_is_rejected_and_known_model_release_is_restored"
+      ],
+      "source_revision": "924a3f9123f75fabff36c3f05126bdc91b5e7482",
+      "receipt_refs": [
+        "evidence/benchmark.json"
+      ],
+      "conditions": "Actual model-lifecycle-service revision 5c15b49af3d8034131202edca33d6cd18dc131be, copied isolated registries, Apple M4, Python 3.12.10.",
+      "limitations": "Local process and artifact rollback only; no production traffic, application-code rollback, or database migration rollback.",
+      "draft_resume_wording": "Built a fail-closed release gate that rejected an actual service candidate with a missing model release and restored the hashed wine-logreg-v2 artifact in 3.081 seconds under recorded local conditions.",
+      "wording_status": "user_review_pending",
+      "mastery_status": "pending"
+    },
+    {
+      "id": "release-owned-failure-recovery-v1",
+      "capability_tags": [
+        "failure-injection",
+        "recovery-testing",
+        "process-safety",
+        "sdet"
+      ],
+      "implementation_refs": [
+        "src/reliability_lab/processes.py:ProcessRegistry",
+        "src/reliability_lab/orchestrator.py:ReliabilityRun._durable_drill",
+        "tests/test_processes.py"
+      ],
+      "source_revision": "924a3f9123f75fabff36c3f05126bdc91b5e7482",
+      "receipt_refs": [
+        "evidence/benchmark.json"
+      ],
+      "conditions": "Actual durable-workflows revision 424053b6a8efd7768f7d09555ef3a89304b74c21, isolated temporary SQLite state, lab-owned process group, Apple M4.",
+      "limitations": "Single-host process interruption; does not simulate disk loss, network partitions, or multi-node failover.",
+      "draft_resume_wording": "Implemented ownership-scoped failure injection and measured 662 ms local recovery while a queued durable request survived process termination and completed after restart.",
+      "wording_status": "user_review_pending",
+      "mastery_status": "pending"
+    },
+    {
+      "id": "release-black-box-load-v1",
+      "capability_tags": [
+        "black-box-testing",
+        "api-contracts",
+        "load-testing",
+        "observability"
+      ],
+      "implementation_refs": [
+        "src/reliability_lab/adapters.py",
+        "src/reliability_lab/orchestrator.py:ReliabilityRun._durable_load",
+        "src/reliability_lab/orchestrator.py:ReliabilityRun._model_load"
+      ],
+      "source_revision": "924a3f9123f75fabff36c3f05126bdc91b5e7482",
+      "receipt_refs": [
+        "evidence/benchmark.json"
+      ],
+      "conditions": "Forty synthetic requests per actual service, eight client threads, localhost, Apple M4, Python 3.12.10.",
+      "limitations": "Small local observation affected by process startup, client creation, host load, and service implementation; not a capacity or SLO claim.",
+      "draft_resume_wording": "Created revisioned black-box reliability evidence covering exact health identities, authorization boundaries, predictions, concurrent requests, controlled outages, and rollback across two local services.",
+      "wording_status": "user_review_pending",
+      "mastery_status": "pending"
+    }
+  ]
+}
