@@ -23,7 +23,7 @@
       ],
       "conditions": "Actual model-lifecycle-service revision 3bc7695ec5e5de472cae4cb9221dd7cd2b269880, copied isolated registries, Apple M4, Python 3.12.10.",
       "limitations": "Local process and artifact rollback only; no production traffic, application-code rollback, or database migration rollback.",
-      "draft_resume_wording": "Built a fail-closed release gate that rejected an actual service candidate with a missing model release and restored the hashed wine-logreg-v2 artifact in 2.469 seconds under recorded local conditions.",
+      "draft_resume_wording": "Tested a release gate that rejected a missing model artifact and restored a known-good model in 2.47 seconds on a local host.",
       "wording_status": "user_review_pending",
       "mastery_status": "pending"
     },
@@ -47,7 +47,7 @@
       ],
       "conditions": "Actual durable-workflows revision 424053b6a8efd7768f7d09555ef3a89304b74c21, isolated temporary SQLite state, lab-owned process group, Apple M4.",
       "limitations": "Single-host process interruption; does not simulate disk loss, network partitions, or multi-node failover.",
-      "draft_resume_wording": "Implemented ownership-scoped failure injection and measured 736 ms local recovery while a queued durable request survived process termination and completed after restart.",
+      "draft_resume_wording": "Tested recovery from a worker process crash: a queued request completed after restart, with 736 ms recovery measured locally.",
       "wording_status": "user_review_pending",
       "mastery_status": "pending"
     },
@@ -71,7 +71,7 @@
       ],
       "conditions": "Forty synthetic requests per actual service, eight client threads, localhost, Apple M4, Python 3.12.10.",
       "limitations": "Small local observation affected by process startup, client creation, host load, and service implementation; not a capacity or SLO claim.",
-      "draft_resume_wording": "Created revisioned black-box reliability evidence covering exact health identities, authorization boundaries, predictions, concurrent requests, controlled outages, and rollback across two local services.",
+      "draft_resume_wording": "Built integration tests across two local services for authorization, predictions, concurrent requests, outages and rollback.",
       "wording_status": "user_review_pending",
       "mastery_status": "pending"
     }
