@@ -11,7 +11,7 @@ from reliability_lab import __version__
 
 
 def create_app(report_path: Path) -> FastAPI:
-    application = FastAPI(title="Release Reliability Lab", version=__version__)
+    application = FastAPI(title="Deployment Test Suite", version=__version__)
     static_dir = Path(__file__).resolve().parents[2] / "static"
     if not static_dir.exists():
         static_dir = Path(__file__).resolve().parent / "static"

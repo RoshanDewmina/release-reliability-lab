@@ -1,12 +1,12 @@
-# Blackbox: release reliability lab
+# Deployment Test Suite
 
-Blackbox is a local release gate and failure-testing product for the portfolio services. One command launches real service processes against isolated temporary state, runs health and API contract probes, applies bounded concurrent load, interrupts an owned process, rejects a broken model candidate, restores the last-known-good model artifact, and writes an inspectable evidence report. A read-only web UI on port 8116 turns that report into an incident and release timeline.
+Deployment Test Suite is a local release gate and failure-testing product for the portfolio services. One command launches real service processes against isolated temporary state, runs health and API contract probes, applies bounded concurrent load, interrupts an owned process, rejects a broken model candidate, restores the last-known-good model artifact, and writes an inspectable evidence report. A read-only web UI on port 8116 turns that report into an incident and release timeline.
 
 The final integration path exercises `durable-workflows` and `model-lifecycle-service` from their own repositories. A separately labeled fixture mode keeps this repository runnable when those sibling repositories are unavailable; fixture results are never presented as actual-service evidence.
 
 ```mermaid
 flowchart LR
-    CLI[Blackbox CLI] --> PM[Owned process registry]
+    CLI[Deployment Test Suite CLI] --> PM[Owned process registry]
     PM --> D[Durable service :8211]
     PM --> M[Model service :8215]
     CLI --> G[Fail-closed gates]

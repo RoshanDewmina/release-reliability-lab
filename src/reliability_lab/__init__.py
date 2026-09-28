@@ -1,3 +1,3 @@
-"""Release reliability lab."""
+"""Deployment Test Suite."""
 
 __version__ = "0.1.0"

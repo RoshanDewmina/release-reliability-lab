@@ -2,7 +2,7 @@
 
 ## Two-minute explanation
 
-Blackbox provides repeatable release evidence for two independently runnable services. It treats health as a contract, probes a useful API path, adds small bounded load, and records every action. It controls only child processes it started and stores all mutable service state in a temporary directory. The durable drill kills a process with a queued request and proves that the restarted service completes it from the same database. The model drill starts a broken candidate, refuses promotion when health fails, and restores a verified last-known-good artifact registry.
+Deployment Test Suite provides repeatable release evidence for two independently runnable services. It treats health as a contract, probes a useful API path, adds small bounded load, and records every action. It controls only child processes it started and stores all mutable service state in a temporary directory. The durable drill kills a process with a queued request and proves that the restarted service completes it from the same database. The model drill starts a broken candidate, refuses promotion when health fails, and restores a verified last-known-good artifact registry.
 
 ## Decisions to defend
 
