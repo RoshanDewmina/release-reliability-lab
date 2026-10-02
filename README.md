@@ -82,7 +82,7 @@ make benchmark
 make report
 ```
 
-`make benchmark` repeats the actual integration with 40 requests per service and writes `evidence/benchmark.json`. Reports distinguish actual and fixture modes, record action duration and outcomes, include short incident writeups, measured load observations, source and dependency revisions, conditions, and limitations. Draft claims live in `evidence/claims.json` and remain pending user wording and mastery review.
+`make benchmark` repeats the actual integration with 40 requests per service and writes `evidence/benchmark.json`. Reports distinguish actual and fixture modes, record action duration and outcomes, include short incident writeups, measured load observations, source and dependency revisions, conditions, and limitations.
 
 The tests cover wrong-version and unhealthy fail-closed gates, refusal to signal an unowned process, cleanup isolation, atomic report replacement, the report API, a full fixture run, and a real candidate rejection plus last-known-good rollback when the sibling model repository is available.
 
